@@ -17,12 +17,31 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
   const [taskList, setTaskList] = useState<Task[]>(tasks);
 
   const handleOnClickAdd = () => {
-    console.log('handleOnClickAdd is called');
     setTaskList((prev) => [
       ...prev,
       { id: '', title: 'new task', createdAt: '', isDeleted: false }
     ]);
   };
+
+  const handleOnClickUpdate = (targetIndex: number, title: string) => {
+    setTaskList((prev) => {
+      const tasks = prev.map((task, i) => {
+        if (i === targetIndex) {
+          return { ...task, title };
+        }
+        return task;
+      });
+      return tasks;
+    });
+  };
+
+  const handleOnClickDelete = (targetIndex: number) => {
+    setTaskList((prev) => {
+      const tasks = prev.filter((_, i) => i !== targetIndex);
+      return tasks;
+    });
+  };
+
   return (
     <Grid
       style={{
@@ -30,7 +49,15 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
       }}
     >
       {taskList.length <= maxTasks &&
-        taskList.map((task, index) => <TaskCard task={task} key={task.id} />)}
+        taskList.map((task, index) => (
+          <TaskCard
+            key={index}
+            task={task}
+            targetIndex={index}
+            handleOnClickUpdate={handleOnClickUpdate}
+            handleOnClickDelete={handleOnClickDelete}
+          />
+        ))}
       {taskList.length < maxTasks && (
         <Col span={4}>
           <Box
