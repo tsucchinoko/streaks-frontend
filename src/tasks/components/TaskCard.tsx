@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useMemo, useState } from 'react';
-import { Task } from '../types';
+import { Task, TaskResponse } from '../types';
 import {
   ActionIcon,
   Box,
@@ -12,38 +12,38 @@ import {
 import { DeleteIcon, EditIcon, TaskIcon, CheckIcon, CancelIcon } from '@/icons';
 
 type Props = {
-  task: Task;
+  task: TaskResponse;
   targetIndex: number;
-  handleOnClickUpdate: (targetIndex: number, title: string) => void;
+  handleOnChange: (
+    targetIndex: number,
+    e: ChangeEvent<HTMLInputElement>
+  ) => void;
+  handleOnReset: () => void;
+  handleOnClickUpdate: (targetIndex: number) => void;
   handleOnClickDelete: (targetIndex: number) => void;
 };
 
 const TaskCard = ({
   task,
   targetIndex,
+  handleOnChange,
+  handleOnReset,
   handleOnClickUpdate,
   handleOnClickDelete
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(task.title);
-  const originalTitle = useMemo(() => task.title, [task.title]);
 
   const handleOnClickEdit = () => {
     setIsEditing(true);
   };
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    setTitle(newValue);
-  };
-
   const handleOnClickCheck = () => {
-    handleOnClickUpdate(targetIndex, title);
+    handleOnClickUpdate(targetIndex);
     setIsEditing(false);
   };
 
   const handleOnClickCancel = () => {
-    setTitle(originalTitle);
+    handleOnReset();
     setIsEditing(false);
   };
 
@@ -82,7 +82,7 @@ const TaskCard = ({
               <TaskIcon size={30} />
             </div>
             <div style={{ flex: 1 }}>
-              <Text size="sm">1</Text>
+              <Text size="sm">{task.completedCount}</Text>
             </div>
           </Flex>
         </ActionIcon>
@@ -92,8 +92,8 @@ const TaskCard = ({
               placeholder={task.title}
               size="md"
               mt={8}
-              value={title}
-              onChange={handleOnChange}
+              value={task.title}
+              onChange={(e) => handleOnChange(targetIndex, e)}
             />
             <Flex justify="center" align="center" mt={8} gap={8}>
               <ActionIcon ml={4} variant="light" onClick={handleOnClickCancel}>

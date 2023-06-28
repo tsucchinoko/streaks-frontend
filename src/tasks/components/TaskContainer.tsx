@@ -1,10 +1,12 @@
 'use client';
 import { Container, MantineProvider } from '@mantine/core';
-import React from 'react';
+import { Notifications } from '@mantine/notifications';
+import React, { useEffect } from 'react';
 import { TaskList } from './TaskList';
-import { Task } from '../types';
+import { Task, TaskResponse } from '../types';
+import { useTasks } from '../hooks/use-task';
 
-const TaskContainer = ({ tasks }: { tasks: Task[] }) => {
+const TaskContainer = ({ tasks }: { tasks: TaskResponse[] }) => {
   return (
     <MantineProvider
       withGlobalStyles
@@ -13,6 +15,7 @@ const TaskContainer = ({ tasks }: { tasks: Task[] }) => {
         colorScheme: 'dark'
       }}
     >
+      <Notifications position="top-right" />
       <Container
         style={{
           display: 'flex',

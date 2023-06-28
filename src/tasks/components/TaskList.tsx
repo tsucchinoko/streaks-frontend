@@ -8,26 +8,48 @@ import {
   Text,
   Box
 } from '@mantine/core';
-import React, { useState } from 'react';
-import { Task } from '../types';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { Task, TaskResponse } from '../types';
 import { maxTasks } from '../service/constants';
 import { TaskCard } from './TaskCard';
+import { useTasks } from '../hooks/use-task';
+import { addTask } from '../api';
+import {
+  showErrorNotifications,
+  showSuccessNotifications
+} from '@/utils/notifications';
+import { useRouter } from 'next/navigation';
 
-const TaskList = ({ tasks }: { tasks: Task[] }) => {
-  const [taskList, setTaskList] = useState<Task[]>(tasks);
+const TaskList = ({ tasks }: { tasks: TaskResponse[] }) => {
+  const [taskLists, setTasks] = useState<TaskResponse[]>(tasks);
+  const [isEditing, setIsEditing] = useState(false);
+  const originalTasks = useMemo(() => tasks, []);
 
-  const handleOnClickAdd = () => {
-    setTaskList((prev) => [
-      ...prev,
-      { id: '', title: 'new task', createdAt: '', isDeleted: false }
-    ]);
+  const router = useRouter();
+
+  const handleOnClickAdd = async () => {
+    try {
+      await addTask('new task');
+      router.push('/created');
+    } catch (e) {
+      showErrorNotifications('タスクの追加に失敗しました', `${e}`);
+    }
+
+    // setTasks((prev) => [
+    //   ...prev,
+    //   { id: '', title: 'new task', completedCount: 0 }
+    // ]);
   };
 
-  const handleOnClickUpdate = (targetIndex: number, title: string) => {
-    setTaskList((prev) => {
+  const handleOnChange = (
+    targetIndex: number,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    setTasks((prev) => {
+      const newTitle = e.target.value;
       const tasks = prev.map((task, i) => {
         if (i === targetIndex) {
-          return { ...task, title };
+          return { ...task, title: newTitle };
         }
         return task;
       });
@@ -35,8 +57,16 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
     });
   };
 
+  const handleOnClickUpdate = (targetIndex: number) => {
+    alert('未実装');
+  };
+
+  const handleOnReset = () => {
+    setTasks(originalTasks);
+  };
+
   const handleOnClickDelete = (targetIndex: number) => {
-    setTaskList((prev) => {
+    setTasks((prev) => {
       const tasks = prev.filter((_, i) => i !== targetIndex);
       return tasks;
     });
@@ -48,17 +78,19 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
         width: '100%'
       }}
     >
-      {taskList.length <= maxTasks &&
-        taskList.map((task, index) => (
+      {tasks.length <= maxTasks &&
+        tasks.map((task, index) => (
           <TaskCard
             key={index}
             task={task}
             targetIndex={index}
+            handleOnChange={handleOnChange}
+            handleOnReset={handleOnReset}
             handleOnClickUpdate={handleOnClickUpdate}
             handleOnClickDelete={handleOnClickDelete}
           />
         ))}
-      {taskList.length < maxTasks && (
+      {tasks.length < maxTasks && (
         <Col span={4}>
           <Box
             sx={(theme) => ({

@@ -1,8 +1,9 @@
 export type TaskResponse = {
   id: string;
   title: string;
-  isDeleted: boolean;
-  createdAt: string;
+  completedCount: number;
 };
 
-export type Task = TaskResponse;
+export type Task = {
+  title: string;
+};

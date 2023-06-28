@@ -1,6 +1,7 @@
 export {
   AiOutlinePlus as PlusIcon,
-  AiFillCheckCircle as CheckIcon
+  AiFillCheckCircle as CheckIcon,
+  AiFillHome as HomeIcon
 } from 'react-icons/ai';
 export { BiTask as TaskIcon } from 'react-icons/bi';
 export { MdModeEditOutline as EditIcon } from 'react-icons/md';
