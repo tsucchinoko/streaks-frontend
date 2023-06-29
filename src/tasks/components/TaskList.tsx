@@ -13,7 +13,6 @@ import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { AddTask, EditTask, Task, UpdateTask } from '../types';
 import { maxTasks } from '../service/constants';
 import { TaskCard } from './TaskCard';
-import { useTasks } from '../hooks/use-task';
 import { addTask, deleteTask, updateTask, completeTask } from '../api';
 import {
   showErrorNotifications,
