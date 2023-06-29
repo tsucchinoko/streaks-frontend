@@ -2,7 +2,8 @@ export const fetcher = async <T>(url: string): Promise<T> => {
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    cache: 'no-store'
   });
   if (!res.ok) {
     throw new Error('Failed to fetch data');

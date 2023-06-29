@@ -4,9 +4,16 @@ import { Button, Container, Flex, MantineProvider, Text } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { getMessage } from '../service/mode';
 
-const CreatedContainer = () => {
+type Props = {
+  mode: 'create' | 'update' | 'delete';
+};
+
+const OperatedContainer = ({ mode }: Props) => {
   const router = useRouter();
+  const message = getMessage(mode);
+
   return (
     <MantineProvider
       withGlobalStyles
@@ -29,7 +36,7 @@ const CreatedContainer = () => {
             <CheckIcon size={100} color="lightGreen" />
           </div>
           <Text size={'lg'} style={{ fontWeight: 'bold' }}>
-            タスクの追加に成功しました！
+            {message}
           </Text>
           <Button
             size="lg"
@@ -47,4 +54,4 @@ const CreatedContainer = () => {
   );
 };
 
-export { CreatedContainer };
+export { OperatedContainer };

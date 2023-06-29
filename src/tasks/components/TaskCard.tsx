@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useMemo, useState } from 'react';
-import { Task, TaskResponse } from '../types';
+import { AddTask, EditTask, Task, UpdateTask } from '../types';
 import {
   ActionIcon,
   Box,
@@ -10,25 +10,28 @@ import {
   TextInput
 } from '@mantine/core';
 import { DeleteIcon, EditIcon, TaskIcon, CheckIcon, CancelIcon } from '@/icons';
+import { isRegistered } from '../service/isRegistered';
 
 type Props = {
-  task: TaskResponse;
+  task: Task | AddTask;
   targetIndex: number;
   handleOnChange: (
     targetIndex: number,
     e: ChangeEvent<HTMLInputElement>
   ) => void;
-  handleOnReset: () => void;
-  handleOnClickUpdate: (targetIndex: number) => void;
-  handleOnClickDelete: (targetIndex: number) => void;
+  handleOnComplete: (task: EditTask, targetIndex: number) => void;
+  handleOnClickUpdate: (task: EditTask) => void;
+  handleOnReset: (targetIndex: number) => void;
+  handleOnClickDelete: (task: EditTask, targetIndex: number) => void;
 };
 
 const TaskCard = ({
   task,
   targetIndex,
+  handleOnComplete,
   handleOnChange,
-  handleOnReset,
   handleOnClickUpdate,
+  handleOnReset,
   handleOnClickDelete
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -38,12 +41,12 @@ const TaskCard = ({
   };
 
   const handleOnClickCheck = () => {
-    handleOnClickUpdate(targetIndex);
+    handleOnClickUpdate(task);
     setIsEditing(false);
   };
 
-  const handleOnClickCancel = () => {
-    handleOnReset();
+  const handleOnClickCancel = (targetIndex: number) => {
+    handleOnReset(targetIndex);
     setIsEditing(false);
   };
 
@@ -64,7 +67,13 @@ const TaskCard = ({
           alignItems: 'center'
         })}
       >
-        <ActionIcon variant="outline" color="orange" size={80} radius={100}>
+        <ActionIcon
+          variant="outline"
+          color="orange"
+          size={80}
+          radius={100}
+          onClick={() => handleOnComplete(task, targetIndex)}
+        >
           <Flex
             direction="column"
             justify="center"
@@ -82,21 +91,27 @@ const TaskCard = ({
               <TaskIcon size={30} />
             </div>
             <div style={{ flex: 1 }}>
-              <Text size="sm">{task.completedCount}</Text>
+              <Text size="sm">
+                {isRegistered(task) ? task.completedCount : 0}
+              </Text>
             </div>
           </Flex>
         </ActionIcon>
         {isEditing ? (
           <>
             <TextInput
-              placeholder={task.title}
+              placeholder={'タスク名を入力してください'}
               size="md"
               mt={8}
               value={task.title}
               onChange={(e) => handleOnChange(targetIndex, e)}
             />
             <Flex justify="center" align="center" mt={8} gap={8}>
-              <ActionIcon ml={4} variant="light" onClick={handleOnClickCancel}>
+              <ActionIcon
+                ml={4}
+                variant="light"
+                onClick={() => handleOnClickCancel(targetIndex)}
+              >
                 <CancelIcon size={20} />
               </ActionIcon>
               <ActionIcon
@@ -119,7 +134,7 @@ const TaskCard = ({
                 ml={4}
                 variant="light"
                 color="red"
-                onClick={() => handleOnClickDelete(targetIndex)}
+                onClick={() => handleOnClickDelete(task, targetIndex)}
               >
                 <DeleteIcon size={20} />
               </ActionIcon>

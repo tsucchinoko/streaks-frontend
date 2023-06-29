@@ -3,10 +3,10 @@ import { Container, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import React, { useEffect } from 'react';
 import { TaskList } from './TaskList';
-import { Task, TaskResponse } from '../types';
+import { Task } from '../types';
 import { useTasks } from '../hooks/use-task';
 
-const TaskContainer = ({ tasks }: { tasks: TaskResponse[] }) => {
+const TaskContainer = ({ tasks }: { tasks: Task[] }) => {
   return (
     <MantineProvider
       withGlobalStyles

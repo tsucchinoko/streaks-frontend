@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { TaskResponse } from '../types';
+import { Task } from '../types';
 
 export const useTasks = () => {
   // 取得してきたタスク
-  const [tasks, setTasks] = useState<TaskResponse[]>([]);
-  console.log('task in hooks', tasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   return {
     tasks,
