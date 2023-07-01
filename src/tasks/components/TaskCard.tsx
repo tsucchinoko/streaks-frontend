@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 import { MotionBox } from '../../components/motions';
 import { isRegistered } from '../service/isRegistered';
-import { AddTask, EditTask, Task } from '../types';
+import { EditTask } from '../types';
 
 import {
   DeleteIcon,
@@ -14,7 +14,7 @@ import {
 } from '@/components/icons';
 
 type Props = {
-  task: Task | AddTask;
+  task: EditTask;
   targetIndex: number;
   handleOnChange: (
     targetIndex: number,
