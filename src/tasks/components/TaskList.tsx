@@ -1,5 +1,6 @@
 import { Grid, Col, ActionIcon, Text, Box } from '@mantine/core';
-import React, { ChangeEvent, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { ChangeEvent, Dispatch, useMemo, useState } from 'react';
 
 import { MotionBox } from '../../components/motions';
 import { addTask, deleteTask, updateTask, completeTask } from '../api';
@@ -15,9 +16,17 @@ import {
   showSuccessNotifications
 } from '@/utils/notifications';
 
-const TaskList = ({ tasks }: { tasks: Task[] }) => {
+const TaskList = ({
+  tasks,
+  setIsLoading
+}: {
+  tasks: Task[];
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [taskLists, setTasks] = useState<UpdateTask[] | AddTask[]>(tasks);
   const originalTasks = useMemo(() => tasks, [tasks]);
+
+  const router = useRouter();
 
   const handleOnClickAdd = async () => {
     setTasks((prev) => [...prev, { title: '未登録', completedCount: 0 }]);
@@ -52,10 +61,8 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
       }
       // 未登録の場合は新規登録
       await addTask(task);
-      showSuccessNotifications(
-        'タスクを追加しました',
-        `タスク名: ${task.title}`
-      );
+      setIsLoading(true);
+      router.push('/created');
     } catch (e) {
       showErrorNotifications('タスクの更新に失敗しました', `${e}`);
     }

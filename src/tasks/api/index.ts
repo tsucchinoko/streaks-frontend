@@ -1,15 +1,6 @@
-import { UpdateTask, Task, AddTask } from '../types';
+import { UpdateTask, AddTask } from '../types';
 
 import { API_URL } from '@/service/constants';
-
-// タスクの取得
-export const fetchTasks = async (): Promise<Task[]> => {
-  const res = await fetch(`${API_URL}/tasks`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch tasks');
-  }
-  return res.json() as Promise<Task[]>;
-};
 
 // タスクの登録
 export const addTask = async (task: AddTask): Promise<void> => {

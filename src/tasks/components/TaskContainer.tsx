@@ -1,13 +1,15 @@
 'use client';
-import { Container, MantineProvider } from '@mantine/core';
+import { Container, Loader, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Task } from '../types';
 
 import { TaskList } from './TaskList';
 
 const TaskContainer = ({ tasks }: { tasks: Task[] }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <MantineProvider
       withGlobalStyles
@@ -25,7 +27,11 @@ const TaskContainer = ({ tasks }: { tasks: Task[] }) => {
           height: '100vh'
         }}
       >
-        <TaskList tasks={tasks} />
+        {isLoading ? (
+          <Loader variant="bars" color="orange" />
+        ) : (
+          <TaskList tasks={tasks} setIsLoading={setIsLoading} />
+        )}
       </Container>
     </MantineProvider>
   );
