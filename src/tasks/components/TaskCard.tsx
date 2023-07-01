@@ -1,14 +1,10 @@
-import React, { ChangeEvent, useMemo, useState } from 'react';
-import { AddTask, EditTask, Task, UpdateTask } from '../types';
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Col,
-  Flex,
-  Text,
-  TextInput
-} from '@mantine/core';
+import { ActionIcon, Box, Col, Flex, Text, TextInput } from '@mantine/core';
+import React, { ChangeEvent, useState } from 'react';
+
+import { MotionBox } from '../../components/motions';
+import { isRegistered } from '../service/isRegistered';
+import { AddTask, EditTask, Task } from '../types';
+
 import {
   DeleteIcon,
   EditIcon,
@@ -16,8 +12,6 @@ import {
   CheckIcon,
   CancelIcon
 } from '@/components/icons';
-import { isRegistered } from '../service/isRegistered';
-import { MotionBox } from '../../components/motions';
 
 type Props = {
   task: Task | AddTask;

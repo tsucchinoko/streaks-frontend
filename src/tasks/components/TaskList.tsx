@@ -1,34 +1,23 @@
-import { PlusIcon } from '@/components/icons';
-import {
-  Grid,
-  Col,
-  Button,
-  ActionIcon,
-  Center,
-  Text,
-  Box,
-  Loader
-} from '@mantine/core';
+import { Grid, Col, ActionIcon, Text, Box } from '@mantine/core';
 import React, { ChangeEvent, useMemo, useState } from 'react';
-import { AddTask, EditTask, Task, UpdateTask } from '../types';
-import { maxTasks } from '../service/constants';
-import { TaskCard } from './TaskCard';
+
+import { MotionBox } from '../../components/motions';
 import { addTask, deleteTask, updateTask, completeTask } from '../api';
+import { maxTasks } from '../service/constants';
+import { isRegistered } from '../service/isRegistered';
+import { AddTask, EditTask, Task, UpdateTask } from '../types';
+
+import { TaskCard } from './TaskCard';
+
+import { PlusIcon } from '@/components/icons';
 import {
   showErrorNotifications,
   showSuccessNotifications
 } from '@/utils/notifications';
-import { isRegistered } from '../service/isRegistered';
-import { MotionBox } from '../../components/motions';
 
 const TaskList = ({ tasks }: { tasks: Task[] }) => {
-  const [taskLists, setTasks] = useState<Task[] | UpdateTask[] | AddTask[]>(
-    tasks
-  );
-  const [isLoading, setIsLoading] = useState(false);
+  const [taskLists, setTasks] = useState<UpdateTask[] | AddTask[]>(tasks);
   const originalTasks = useMemo(() => tasks, [tasks]);
-
-  if (isLoading) return <Loader color="orange" variant="bars" />;
 
   const handleOnClickAdd = async () => {
     setTasks((prev) => [...prev, { title: '未登録', completedCount: 0 }]);
@@ -55,10 +44,18 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
       // 登録済みの場合は更新
       if (isRegistered(task)) {
         await updateTask(task);
+        showSuccessNotifications(
+          'タスクを更新しました',
+          `タスク名: ${task.title}`
+        );
         return;
       }
       // 未登録の場合は新規登録
       await addTask(task);
+      showSuccessNotifications(
+        'タスクを追加しました',
+        `タスク名: ${task.title}`
+      );
     } catch (e) {
       showErrorNotifications('タスクの更新に失敗しました', `${e}`);
     }
@@ -80,6 +77,10 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
     try {
       if (isRegistered(task)) {
         await deleteTask(task.id);
+        showSuccessNotifications(
+          'タスクを削除しました',
+          `タスク名: ${task.title}`
+        );
       }
       setTasks((prev) => {
         const tasks = prev.filter((_, i) => i !== targetIndex);

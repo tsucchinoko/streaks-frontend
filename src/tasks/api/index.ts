@@ -1,5 +1,6 @@
-import { API_URL } from '@/service/constants';
 import { UpdateTask, Task, AddTask } from '../types';
+
+import { API_URL } from '@/service/constants';
 
 // タスクの取得
 export const fetchTasks = async (): Promise<Task[]> => {

@@ -1,9 +1,11 @@
 'use client';
 import { Container, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import React, { useEffect } from 'react';
-import { TaskList } from './TaskList';
+import React from 'react';
+
 import { Task } from '../types';
+
+import { TaskList } from './TaskList';
 
 const TaskContainer = ({ tasks }: { tasks: Task[] }) => {
   return (

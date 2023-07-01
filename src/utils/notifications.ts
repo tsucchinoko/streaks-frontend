@@ -1,4 +1,3 @@
-import { CheckIcon } from '@/components/icons';
 import { notifications } from '@mantine/notifications';
 
 type NotificationType = 'success' | 'error';

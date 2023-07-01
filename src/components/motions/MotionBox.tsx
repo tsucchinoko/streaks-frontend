@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import React, { ReactNode } from 'react';
 
 export const MotionBox = ({ children }: { children: ReactNode }) => {
   const buttonVariants = {
