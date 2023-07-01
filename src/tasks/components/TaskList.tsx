@@ -1,4 +1,4 @@
-import { PlusIcon } from '@/icons';
+import { PlusIcon } from '@/components/icons';
 import {
   Grid,
   Col,
@@ -9,7 +9,7 @@ import {
   Box,
   Loader
 } from '@mantine/core';
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useMemo, useState } from 'react';
 import { AddTask, EditTask, Task, UpdateTask } from '../types';
 import { maxTasks } from '../service/constants';
 import { TaskCard } from './TaskCard';
@@ -18,8 +18,8 @@ import {
   showErrorNotifications,
   showSuccessNotifications
 } from '@/utils/notifications';
-import { useRouter } from 'next/navigation';
 import { isRegistered } from '../service/isRegistered';
+import { MotionBox } from '../../components/motions';
 
 const TaskList = ({ tasks }: { tasks: Task[] }) => {
   const [taskLists, setTasks] = useState<Task[] | UpdateTask[] | AddTask[]>(
@@ -144,15 +144,17 @@ const TaskList = ({ tasks }: { tasks: Task[] }) => {
               alignItems: 'center'
             })}
           >
-            <ActionIcon
-              variant="filled"
-              color="orange"
-              size={80}
-              radius={100}
-              onClick={handleOnClickAdd}
-            >
-              <PlusIcon size={30} />
-            </ActionIcon>
+            <MotionBox>
+              <ActionIcon
+                variant="filled"
+                color="orange"
+                size={80}
+                radius={100}
+                onClick={handleOnClickAdd}
+              >
+                <PlusIcon size={30} />
+              </ActionIcon>
+            </MotionBox>
             <Text fw={700} size="xl" mt={8}>
               タスクを追加
             </Text>

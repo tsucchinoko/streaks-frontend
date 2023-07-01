@@ -1,5 +1,5 @@
 'use client';
-import { CheckIcon, HomeIcon } from '@/icons';
+import { CheckIcon, HomeIcon } from '@/components/icons';
 import { Button, Container, Flex, MantineProvider, Text } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';

@@ -9,8 +9,15 @@ import {
   Text,
   TextInput
 } from '@mantine/core';
-import { DeleteIcon, EditIcon, TaskIcon, CheckIcon, CancelIcon } from '@/icons';
+import {
+  DeleteIcon,
+  EditIcon,
+  TaskIcon,
+  CheckIcon,
+  CancelIcon
+} from '@/components/icons';
 import { isRegistered } from '../service/isRegistered';
+import { MotionBox } from '../../components/motions';
 
 type Props = {
   task: Task | AddTask;
@@ -67,36 +74,38 @@ const TaskCard = ({
           alignItems: 'center'
         })}
       >
-        <ActionIcon
-          variant="outline"
-          color="orange"
-          size={80}
-          radius={100}
-          onClick={() => handleOnComplete(task, targetIndex)}
-        >
-          <Flex
-            direction="column"
-            justify="center"
-            align="center"
-            style={{ height: '100%' }}
+        <MotionBox>
+          <ActionIcon
+            variant="outline"
+            color="orange"
+            size={80}
+            radius={100}
+            onClick={() => handleOnComplete(task, targetIndex)}
           >
-            <div
-              style={{
-                flex: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'end'
-              }}
+            <Flex
+              direction="column"
+              justify="center"
+              align="center"
+              style={{ height: '100%' }}
             >
-              <TaskIcon size={30} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <Text size="sm">
-                {isRegistered(task) ? task.completedCount : 0}
-              </Text>
-            </div>
-          </Flex>
-        </ActionIcon>
+              <div
+                style={{
+                  flex: 2,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'end'
+                }}
+              >
+                <TaskIcon size={30} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <Text size="sm">
+                  {isRegistered(task) ? task.completedCount : 0}
+                </Text>
+              </div>
+            </Flex>
+          </ActionIcon>
+        </MotionBox>
         {isEditing ? (
           <>
             <TextInput
@@ -107,21 +116,25 @@ const TaskCard = ({
               onChange={(e) => handleOnChange(targetIndex, e)}
             />
             <Flex justify="center" align="center" mt={8} gap={8}>
-              <ActionIcon
-                ml={4}
-                variant="light"
-                onClick={() => handleOnClickCancel(targetIndex)}
-              >
-                <CancelIcon size={20} />
-              </ActionIcon>
-              <ActionIcon
-                ml={4}
-                variant="light"
-                color="green"
-                onClick={handleOnClickCheck}
-              >
-                <CheckIcon size={20} />
-              </ActionIcon>
+              <MotionBox>
+                <ActionIcon
+                  ml={4}
+                  variant="light"
+                  onClick={() => handleOnClickCancel(targetIndex)}
+                >
+                  <CancelIcon size={20} />
+                </ActionIcon>
+              </MotionBox>
+              <MotionBox>
+                <ActionIcon
+                  ml={4}
+                  variant="light"
+                  color="green"
+                  onClick={handleOnClickCheck}
+                >
+                  <CheckIcon size={20} />
+                </ActionIcon>
+              </MotionBox>
             </Flex>
           </>
         ) : (
@@ -130,17 +143,21 @@ const TaskCard = ({
               {task.title}
             </Text>
             <Flex justify="center" align="center" mt={8} gap={8}>
-              <ActionIcon
-                ml={4}
-                variant="light"
-                color="red"
-                onClick={() => handleOnClickDelete(task, targetIndex)}
-              >
-                <DeleteIcon size={20} />
-              </ActionIcon>
-              <ActionIcon ml={4} variant="light" onClick={handleOnClickEdit}>
-                <EditIcon size={20} />
-              </ActionIcon>
+              <MotionBox>
+                <ActionIcon
+                  ml={4}
+                  variant="light"
+                  color="red"
+                  onClick={() => handleOnClickDelete(task, targetIndex)}
+                >
+                  <DeleteIcon size={20} />
+                </ActionIcon>
+              </MotionBox>
+              <MotionBox>
+                <ActionIcon ml={4} variant="light" onClick={handleOnClickEdit}>
+                  <EditIcon size={20} />
+                </ActionIcon>
+              </MotionBox>
             </Flex>
           </>
         )}
